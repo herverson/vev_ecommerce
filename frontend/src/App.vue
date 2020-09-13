@@ -17,19 +17,26 @@
       </div> -->
 
       <v-spacer></v-spacer>
-
+      <v-badge
+        :content="count"
+        :value="count"
+        color="green"
+        overlap
+      >
+        <v-icon large>mdi-cart</v-icon>
+      </v-badge>
       <v-btn
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2">V&V Ecommerce</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-content>
-      <Home/>
+      <Home v-on:addCart="addCart"/>
     </v-content>
   </v-app>
 </template>
@@ -42,7 +49,13 @@ export default {
     Home,
   },
   data: () => ({
-    //
+    count: 0,
+    show: false,
   }),
+  methods: {
+    addCart(value) {
+      this.count += value;
+    }
+  }
 };
 </script>
