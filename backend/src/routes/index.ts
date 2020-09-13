@@ -49,7 +49,7 @@ routes.put("/products/:id", async (req, res) => {
     images,
     quantity
   } = req.body;
-  
+
   const product = {
     title,
     price,
@@ -58,8 +58,8 @@ routes.put("/products/:id", async (req, res) => {
     quantity,
   };
 
-  db('products').where('id', '=', id).update(product).then(function(result) {
-    
+  db('products').where('id', '=', id).update(product).then(function (result) {
+
     if (result === 0) {
       return res.status(400).json({ error: "Product not found!" });
     }
@@ -69,18 +69,18 @@ routes.put("/products/:id", async (req, res) => {
 
 });
 
-routes.delete("/products/:id", (req, res) =>{
-  const {id} = req.params;
+routes.delete("/products/:id", (req, res) => {
+  const { id } = req.params;
 
-  db('products').where('id', '=', id).delete().then(function(result) {
-    
+  db('products').where('id', '=', id).delete().then(function (result) {
+
     if (result === 0) {
       return res.status(400).json({ error: "Product not found!" });
     }
 
     return res.status(204).send();
-  });  
-  
+  });
+
 });
 
 export default routes;
