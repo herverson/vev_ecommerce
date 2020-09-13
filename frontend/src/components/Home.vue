@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-row dense>
-      <v-col v-for="product in products" :key="product.id" :cols="4">
-        <!-- <v-col v-for="product in products" :key="product.id" sm="6" md="4"> -->
+      <!-- <v-col v-for="product in products" :key="product.id" :cols="4"> -->
+      <v-col v-for="product in products" :key="product.id" sm="6" md="4">
         <v-card>
           <v-img
             :src="product.images"
@@ -71,7 +71,46 @@
         </v-btn>
       </v-row>
       <br />
-      <v-btn color="success">Confirmar ({{ formatMoney(Number(order.total)) }})</v-btn>
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="success"
+            v-bind="attrs"
+            v-on="on"
+          >Confirmar ({{ formatMoney(Number(order.total)) }})</v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="headline">Extrato do seu pedido #{{ order.id }}</v-card-title>
+          <v-col cols="12">
+            <v-list three-line subheader>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>Dados da Entrega</v-list-item-title>
+              <v-list-item-subtitle>Las Vegas do Piauí , 170 - Piauí</v-list-item-subtitle>
+              <v-list-item-subtitle>Francisco Santo</v-list-item-subtitle>
+              <v-list-item-subtitle>Picos, PI-64600-000</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+            </v-list>
+          </v-col>
+          <v-divider></v-divider>
+          <v-col cols="12">
+            <v-card-text>Produtos</v-card-text>
+            <v-row v-for="orderItem in order.orderItems" v-bind:key="orderItem.item.id">
+              <v-col class="md-1">{{ orderItem.quantity }}</v-col>
+              <v-col class="md-5">{{ orderItem.item.title }}</v-col>
+              <v-col class="md-3">{{ formatMoney(orderItem.quantity * orderItem.item.price) }}</v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            Total {{ formatMoney(Number(order.total)) }}
+          </v-col>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialog = false">Ok</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-container>
 </template>
@@ -81,6 +120,7 @@ import axios from "axios/dist/axios";
 export default {
   name: "Home",
   data: () => ({
+    dialog: false,
     products: [],
     loading: false,
     selection: 1,

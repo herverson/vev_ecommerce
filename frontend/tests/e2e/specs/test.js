@@ -1,13 +1,30 @@
 // https://docs.cypress.io/api/introduction/api.html
 
 describe('Thats test server OK', () => {
-  it('displays products from API', () => {
+  it('Server OK', () => {
+    cy.request('http://localhost:3000/products')
+      .should((response) => {
+        expect(response.status).to.eq(200);
+        expect(response).to.have.property('headers');
+        expect(response).to.have.property('duration');
+      });
+  });
+
+  it('Server has data', () => {
+    cy.request('http://localhost:3000/products')
+      .should((response) => {
+        expect(response.status).to.eq(200);
+        // server to have a length at least 1
+        expect(response.body).to.be.length.gte(1);
+      });
+  });
+
+  it('Server have at 4', () => {
     cy.request('http://localhost:3000/products')
       .should((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.have.length(4);
-        expect(response).to.have.property('headers');
-        expect(response).to.have.property('duration');
-      })
-  })
+      });
+  });
+
 })
