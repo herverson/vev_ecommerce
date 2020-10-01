@@ -20,7 +20,7 @@
               large
               right
               top
-              @click="addItem(product)"
+              @click="snackbar = true, addItem(product)"
             >
               <v-icon>mdi-cart</v-icon>
             </v-btn>
@@ -112,6 +112,27 @@
         </v-card>
       </v-dialog>
     </v-col>
+    <v-snackbar
+      v-model="snackbar"
+      color="success"
+      float
+      right
+      rounded="pill"
+      top
+    >
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          fechar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -120,6 +141,8 @@ import axios from "axios/dist/axios";
 export default {
   name: "Home",
   data: () => ({
+    text: 'Produto adicionado ao carrinho',
+    snackbar: false,
     dialog: false,
     products: [],
     loading: false,
@@ -135,7 +158,6 @@ export default {
   mounted() {
     axios.get("http://localhost:3000/products").then((response) => {
       this.products = response.data;
-      // console.log("chama", this.products)
     });
   },
   methods: {
