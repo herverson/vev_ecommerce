@@ -151,6 +151,13 @@
 <script>
 import axios from "axios/dist/axios";
 export default {
+  props: {
+    order: {
+      id: Math.floor(Math.random() * 10000),
+      orderItems: [],
+      total: 0.0,
+    },
+  },
   name: "Home",
   data: () => ({
     text: "Produto adicionado ao carrinho",
@@ -161,11 +168,6 @@ export default {
     selection: 1,
     messages: 0,
     show: true,
-    order: {
-      id: Math.floor(Math.random() * 10000),
-      orderItems: [],
-      total: 0.0,
-    },
   }),
   mounted() {
     axios.get("http://localhost:3000/products").then((response) => {
