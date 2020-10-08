@@ -64,38 +64,50 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <v-card shaped color="blue-grey" class="white--text">
-          <v-card-title class="headline"
-            ><h5>Pedido #{{ order.id }}</h5></v-card-title
-          >
-          <v-divider></v-divider>
-          <v-col cols="12">
-            <div v-if="order.orderItems.length === 0">
-              <br />
-              <br />
-              <h5>Escolha os items do pedido</h5>
-            </div>
-            <v-row
-              v-for="orderItem in order.orderItems"
-              v-bind:key="orderItem.item.id"
+        <div v-show="$vuetify.breakpoint.xs === false">
+          <v-card flat color="blue-grey" class="white--text">
+            <v-snackbar
+              :timeout="-1"
+              color="blue-grey"
+              :value="true"
+              float
+              right
+              shaped
+              top
             >
-              <v-col class="md-1">{{ orderItem.quantity }}</v-col>
-              <v-col class="md-5">{{ orderItem.item.title }}</v-col>
-              <v-col class="md-3">{{
-                formatMoney(orderItem.quantity * orderItem.item.price)
-              }}</v-col>
-              <v-btn icon @click="deleteItem(orderItem.item)">
-                <v-icon color="white">mdi-minus</v-icon>
-              </v-btn>
-            </v-row>
-          </v-col>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="success" @click="(dialog = true), (show = false)"
-              >Confirmar ({{ formatMoney(Number(order.total)) }})</v-btn
-            >
-          </v-card-actions>
-        </v-card>
+              <v-card-title class="headline"
+                ><h5>Pedido #{{ order.id }}</h5></v-card-title
+              >
+              <v-divider></v-divider>
+              <v-col cols="12">
+                <div v-if="order.orderItems.length === 0">
+                  <br />
+                  <br />
+                  <h5>Escolha os items do pedido</h5>
+                </div>
+                <v-row
+                  v-for="orderItem in order.orderItems"
+                  v-bind:key="orderItem.item.id"
+                >
+                  <v-col class="md-1">{{ orderItem.quantity }}</v-col>
+                  <v-col class="md-5">{{ orderItem.item.title }}</v-col>
+                  <v-col class="md-3">{{
+                    formatMoney(orderItem.quantity * orderItem.item.price)
+                  }}</v-col>
+                  <v-btn icon @click="deleteItem(orderItem.item)">
+                    <v-icon color="white">mdi-minus</v-icon>
+                  </v-btn>
+                </v-row>
+              </v-col>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="success" @click="(dialog = true), (show = false)"
+                  >Confirmar ({{ formatMoney(Number(order.total)) }})</v-btn
+                >
+              </v-card-actions>
+            </v-snackbar>
+          </v-card>
+        </div>
       </v-col>
     </v-row>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -151,6 +163,23 @@
 <script>
 import axios from "axios/dist/axios";
 export default {
+  computed: {
+    cartfloat() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "absolute";
+        case "sm":
+          return "absolute";
+        case "md":
+          return "float";
+        case "lg":
+          return "float";
+        case "xl":
+          return "float";
+      }
+      return "";
+    },
+  },
   props: {
     order: {
       id: Math.floor(Math.random() * 10000),

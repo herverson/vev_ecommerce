@@ -19,11 +19,11 @@ describe('Thats test server OK', () => {
       });
   });
 
-  it('Server have at 4', () => {
+  it('Server have > 4 products', () => {
     cy.request('http://localhost:3000/products')
       .should((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.length(4);
+        expect(response.body).to.be.length.gte(4);
       });
   });
 

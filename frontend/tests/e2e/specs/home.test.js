@@ -31,7 +31,6 @@ describe('Tests to Home component', () => {
     it('Delete product from cart', () => {
         cy.get('.row > .v-btn > .v-btn__content > .v-icon').click();
         cy.get('.v-badge__badge').contains('2');
-        cy.get('.col-md-4.col-12 > .v-card > .col-12 > .row > .md-1').contains('2');
     });
 
     it('Confirm order', () => {
